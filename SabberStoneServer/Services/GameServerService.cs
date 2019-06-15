@@ -22,6 +22,8 @@ namespace SabberStoneServer.Services
 
         private readonly ConcurrentDictionary<string, UserDataInfo> _registredUsers;
 
+        public ICollection<UserDataInfo> RegistredUsers => _registredUsers.Values;
+
         public GameServerServiceImpl()
         {
             _registredUsers = new ConcurrentDictionary<string, UserDataInfo>();
