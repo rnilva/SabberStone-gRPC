@@ -1,0 +1,46 @@
+﻿syntax = "proto3";
+
+service Simple {
+	rpc Connect(Id) returns (ConnectionState) {}
+	rpc Disconnect(Id) returns (ConnectionState) {}
+	rpc Queue(Id) returns (GameState) {}
+	rpc SendOption(Option) returns (GameState) {}
+}
+
+message Id {
+	string value = 1;
+}
+
+message ConnectionState {
+	enum State {
+		INVALID = 0;
+		CONNECTED = 1;
+		DISCONNECTED = 2;
+	}
+	State state = 1;
+}
+
+message GameState {
+	enum State {
+		INVALID = 0;
+		RUNNING = 1;
+		COMPLETE = 3;
+	}
+	State state = 1;
+	int32 error_code = 2;
+}
+
+message Option {
+	enum PlayerTaskType {
+		CHOOSE = 0;
+		CONCEDE = 1;
+		END_TURN = 2;
+		HERO_ATTACK = 3;
+		HERO_POWER = 4;
+		MINION_ATTACK = 5;
+		PLAY_CARD = 6;
+	}
+	string id = 1;
+	PlayerTaskType type = 2;
+}
+
