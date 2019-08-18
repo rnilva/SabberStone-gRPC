@@ -11,7 +11,6 @@ namespace SimpleServer
         public static readonly ConcurrentDictionary<string, SimpleGameClient> Clients =
             new ConcurrentDictionary<string, SimpleGameClient>();
 
-        public event Action<SimpleGameClient> MatchStartedEvent;
         public TaskCompletionSource<object> MatchTCS = new TaskCompletionSource<object>();
 
         public readonly string Id;

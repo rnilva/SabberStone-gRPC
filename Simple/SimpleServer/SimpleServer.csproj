@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <Protobuf Include="simple.proto"></Protobuf>
+    <Protobuf Include="powerhistory.proto"></Protobuf>
   </ItemGroup>
 
 </Project>

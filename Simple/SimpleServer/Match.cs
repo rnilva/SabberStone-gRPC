@@ -10,6 +10,7 @@ namespace SimpleServer
         private readonly object _locker = new object();
         private TaskCompletionSource<object> _p1TCS;
         private TaskCompletionSource<object> _p2TCS;
+        private List<GuiClient> _connectedGuiClients = new List<GuiClient>();
 
         public readonly SimpleGameClient Player1;
         public readonly SimpleGameClient Player2;
@@ -78,6 +79,14 @@ namespace SimpleServer
                     State = GameState.Types.State.Running
                 }; // result = new GameState(game);
 
+                // TODO streaming histories
+                //foreach (var gClient in _connectedGuiClients)
+                //    gClient.WriteAsync
+
+                // TODO Dispose
+                if (result.State == GameState.Types.State.Complete)
+                    Close();
+
                 return result;
             }
             catch
@@ -85,6 +94,28 @@ namespace SimpleServer
                 ;
                 return null;
             }
+        }
+
+        public void AddGuiClient(GuiClient client)
+        {
+            if (client.CurrentMatch != null) throw new Exception();
+
+            client.CurrentMatch = this;
+            _connectedGuiClients.Add(client);
+            client.StreamingTCS = new TaskCompletionSource<object>();
+        }
+
+        private void Close()
+        {
+            foreach (GuiClient gClient in _connectedGuiClients)
+            {
+                gClient.StreamingTCS.SetResult(new object());
+                gClient.CurrentMatch = null;
+            }
+
+            _connectedGuiClients = null;
+            Player1.CurrentMatch = null;
+            Player2.CurrentMatch = null;
         }
     }
 }

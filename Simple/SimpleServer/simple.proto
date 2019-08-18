@@ -1,10 +1,17 @@
 ﻿syntax = "proto3";
+import "powerhistory.proto";
 
 service Simple {
 	rpc Connect(Id) returns (ConnectionState) {}
 	rpc Disconnect(Id) returns (ConnectionState) {}
 	rpc Queue(Id) returns (GameState) {}
 	rpc SendOption(Option) returns (GameState) {}
+}
+
+service GUIService {
+	rpc ConnectGui(Id) returns (ConnectionState) {}
+	// rpc AttachGui(Id) returns () {}
+	rpc GetHistories(Id) returns (stream PowerHistory) {}
 }
 
 message Id {
